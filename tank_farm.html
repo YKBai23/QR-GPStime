@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Tank Farm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            background-color: #f5f5f5;
+        }
+        h1 { font-size: 4em; }
+        .info { font-size: 2em; margin-top: 20px; }
+        .code { font-size: 4em; color: green; margin-top: 20px; display:none; }
+    </style>
+</head>
+<body>
+    <h1>Tank Farm</h1>
+    <div class="info">Your Location: <span id="your-location">Waiting...</span></div>
+    <div class="info">QR Position: 32°9'38.23"N, 81°27'0.68"W</div>
+    <div class="info">Distance: <span id="distance">...</span> feet</div>
+    <div class="info">Authorized? <span id="authorized">Checking...</span></div>
+    <div class="code" id="secret-code">TF123</div>
+
+    <script>
+        const R = 6371e3;
+        const targetLat = 32.16061944;
+        const targetLon = -81.45018889;
+
+        function toRad(deg) { return deg * Math.PI / 180; }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const φ1 = toRad(lat1);
+            const φ2 = toRad(lat2);
+            const Δφ = toRad(lat2 - lat1);
+            const Δλ = toRad(lon2 - lon1);
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const d = R * c;
+            return d * 3.28084;
+        }
+
+        function updatePosition(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            document.getElementById("your-location").textContent = lat.toFixed(6) + ", " + lon.toFixed(6);
+            const dist = calculateDistance(lat, lon, targetLat, targetLon);
+            document.getElementById("distance").textContent = dist.toFixed(1);
+            const authorized = dist <= 200;
+            document.getElementById("authorized").textContent = authorized ? "Yes" : "No";
+            document.getElementById("secret-code").style.display = authorized ? "block" : "none";
+        }
+
+        navigator.geolocation.getCurrentPosition(updatePosition);
+    </script>
+</body>
+</html>
