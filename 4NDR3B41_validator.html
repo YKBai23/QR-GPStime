@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>4NDR3 B41 GPS Check Code</title>
+    <style>
+        body {
+            background-color: #0a0f2c;
+            font-family: 'Arial', sans-serif;
+            color: #ffffff;
+            text-align: center;
+            padding: 30px;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin: 20px 0 5px;
+            font-size: 1.2em;
+        }
+        input, select {
+            padding: 10px;
+            font-size: 1em;
+            width: 250px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: #26a69a;
+            color: white;
+            padding: 12px 24px;
+            font-size: 1em;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 25px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .accepted {
+            color: #00e676;
+        }
+        .declined {
+            color: #ff1744;
+        }
+    </style>
+</head>
+<body>
+    <h1>4NDR3 B41</h1>
+    <p><strong>GPS Check Code Validator</strong></p>
+
+    <label for="date">Date (MM-DD)</label>
+    <input type="text" id="date" placeholder="e.g., 07-12" maxlength="5">
+
+    <label for="time">Time (HH:MM)</label>
+    <input type="text" id="time" placeholder="e.g., 14:30" maxlength="5">
+
+    <label for="department">Department</label>
+    <select id="department">
+        <option>Assembly</option>
+        <option>Assembly Electric Room</option>
+        <option>Stamping</option>
+        <option>Stamping Electric Room</option>
+        <option>Welding</option>
+        <option>Welding Electric Room</option>
+        <option>UTC</option>
+        <option>UTC Electric Room</option>
+        <option>Painting</option>
+        <option>Paint 1F Electric Room</option>
+        <option>Paint 3F Electric Room</option>
+        <option>CC Electric Room</option>
+        <option>AHU Head Office</option>
+        <option>EG2 Electric Room</option>
+        <option>Glovis VPC Electric Room</option>
+        <option>VPC Compressor</option>
+        <option>Tank Farm</option>
+    </select>
+
+    <label for="code">Secret Code (5 chars)</label>
+    <input type="text" id="code" maxlength="5">
+
+    <button onclick="validate()">Check</button>
+
+    <div id="result" class="result"></div>
+
+    <script>
+        function validate() {
+            const code = document.getElementById("code").value.trim();
+            const resultEl = document.getElementById("result");
+            if (code.length !== 5) {
+                resultEl.innerHTML = "Code must be 5 characters.";
+                resultEl.className = "result declined";
+                return;
+            }
+            // Simulate correct validation
+            const acceptedCodes = ["YT042", "XR035", "ZP015"];  // Example dummy list
+            if (acceptedCodes.includes(code.toUpperCase())) {
+                resultEl.innerHTML = "✅ ACCEPTED";
+                resultEl.className = "result accepted";
+            } else {
+                resultEl.innerHTML = "❌ DECLINED";
+                resultEl.className = "result declined";
+            }
+        }
+    </script>
+</body>
+</html>
